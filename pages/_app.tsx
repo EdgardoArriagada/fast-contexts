@@ -5,7 +5,23 @@ import Head from 'next/head'
 import Link from 'next/link'
 import s from '../styles/MyApp.module.css'
 
-function MyApp({ Component, pageProps }: AppProps) {
+type LiProps = {
+  path: string
+  currentPath: string
+  text: string
+}
+
+const Li: React.FC<LiProps> = ({ path, currentPath, text }) => {
+  return (
+    <li className={path === currentPath ? s.active : ''}>
+      <Link href={path}>
+        <a>{text}</a>
+      </Link>
+    </li>
+  )
+}
+
+function MyApp({ Component, pageProps, router }: AppProps) {
   if (pageProps.statusCode === 404) return <Component {...pageProps} />
 
   return (
@@ -20,16 +36,16 @@ function MyApp({ Component, pageProps }: AppProps) {
       </Head>
 
       <ul className={s.navigation}>
-        <li>
-          <Link href="/observables">
-            <a>Observables</a>
-          </Link>
-        </li>
-        <li>
-          <Link href="/split-context">
-            <a>Split context</a>
-          </Link>
-        </li>
+        <Li
+          path="/observables"
+          text="Observables"
+          currentPath={router.pathname}
+        />
+        <Li
+          path="/split-context"
+          text="Split Context"
+          currentPath={router.pathname}
+        />
       </ul>
       <main className={s.main}>
         <Component {...pageProps} />
