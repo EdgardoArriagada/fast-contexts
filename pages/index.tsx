@@ -1,7 +1,7 @@
 import type { NextPage } from 'next'
 
 const Home: NextPage = () => {
-  return <main>Click any of the links above to see the examples</main>
+  return <div>you should never reach here due to root/middleware.ts</div>
 }
 
 export default Home
