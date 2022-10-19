@@ -17,11 +17,15 @@
 }
 
 .navigation li:hover {
-  background-color: teal;
+  background-color: hsl(202, 54%, 60%);
+}
+
+.navigation li:active {
+  background-color: hsl(202, 54%, 30%);
 }
 
 li.active {
-  background-color: teal;
+  background-color: hsl(202, 54%, 40%);
 }
 
 .main {
