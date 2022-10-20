@@ -10,21 +10,21 @@
   list-style-type: none;
 }
 
-.navigation li {
+.navigation a {
   padding: 0.5rem;
   background-color: gray;
   border-radius: 0.5rem;
 }
 
-.navigation li:hover {
+.navigation a:hover {
   background-color: hsl(202, 54%, 60%);
 }
 
-.navigation li:active {
+.navigation a:active {
   background-color: hsl(202, 54%, 30%);
 }
 
-li.active {
+.navigation li.selected a {
   background-color: hsl(202, 54%, 40%);
 }
 

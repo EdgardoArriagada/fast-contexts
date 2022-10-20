@@ -13,7 +13,7 @@ type LiProps = {
 
 const Li: React.FC<LiProps> = ({ path, currentPath, text }) => {
   return (
-    <li className={path === currentPath ? s.active : ''}>
+    <li className={path === currentPath ? s.selected : ''}>
       <Link href={path}>
         <a>{text}</a>
       </Link>
