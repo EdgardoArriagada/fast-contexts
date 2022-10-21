@@ -21,7 +21,6 @@ const CurrentTodos: FC<Props> = () => {
   const [, setPastTodos] = useTodoStore((todoStore) => todoStore.past)
 
   const handleCheckboxClick = (id: number) => {
-    console.log('handleCheckboxClick', id)
     const newCurrentTodos = currentTodos.filter((todo) => todo.id !== id)
     const newPastTodos = currentTodos.find((todo) => todo.id === id)
 

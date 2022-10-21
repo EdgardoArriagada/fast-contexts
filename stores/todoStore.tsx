@@ -8,9 +8,10 @@ export type Todo = {
 interface TodoStore {
   current: Todo[]
   past: Todo[]
+  title: string
 }
 
-const initialState: TodoStore = { current: [], past: [] }
+const initialState: TodoStore = { current: [], past: [], title: 'Todo List' }
 
 const { Provider, useStore } = createFastContext(initialState)
 
