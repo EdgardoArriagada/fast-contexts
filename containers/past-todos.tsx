@@ -15,18 +15,17 @@ const elementStyles: CSSProperties = {
 }
 
 const PastTodos: FC<Props> = () => {
-  const [, setCurrentTodos] = useTodoStore((todoStore) => todoStore.current)
-  const [pastTodos, setPastTodos] = useTodoStore((todoStore) => todoStore.past)
+  const [pastTodos, updateStore] = useTodoStore((todoStore) => todoStore.past)
 
   const handleCheckboxClick = (id: number) => {
     const newPastTodos = pastTodos.filter((todo) => todo.id !== id)
     const resurrectedTodo = pastTodos.find((todo) => todo.id === id)
 
-    setPastTodos({
+    updateStore({
       past: newPastTodos,
     })
 
-    setPastTodos((store) => ({
+    updateStore((store) => ({
       current: [...store.current, resurrectedTodo],
     }))
   }

@@ -5,8 +5,6 @@ import TodoForm from './todo-form'
 import Title from './title'
 import TitleSetter from './title-setter'
 
-import { useTodoStore } from '../stores/todoStore'
-
 interface Props {}
 
 const TodoBody: FC<Props> = () => {
