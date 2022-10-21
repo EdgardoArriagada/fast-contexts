@@ -1,6 +1,6 @@
 import createFastContext from '../contexts/createFastContext'
 
-type Todo = {
+export type Todo = {
   id: number
   text: string
 }

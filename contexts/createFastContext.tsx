@@ -19,8 +19,15 @@ export default function createFastContext<Store>(initialState: Store) {
 
     const subscribers = useRef(new Set<() => void>())
 
-    const set = useCallback((value: Partial<Store>) => {
-      store.current = { ...store.current, ...value }
+    type FunctionSetter = (value: Store) => Partial<Store>
+    type SetArg = FunctionSetter | Partial<Store>
+
+    const set = useCallback((arg: SetArg) => {
+      if (typeof arg === 'function') {
+        store.current = { ...store.current, ...arg(store.current) }
+      } else {
+        store.current = { ...store.current, ...arg }
+      }
       subscribers.current.forEach((callback) => callback())
     }, [])
 
