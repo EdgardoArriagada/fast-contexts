@@ -1,6 +1,11 @@
-import React, { useRef, FC } from 'react'
+import React, { useRef, FC, CSSProperties } from 'react'
 
 import { useTodoStore } from '../stores/todoStore'
+
+const formStyles: CSSProperties = {
+  display: 'flex',
+  gap: '1rem',
+}
 
 interface Props {}
 
@@ -18,7 +23,7 @@ const TodoForm: FC<Props> = () => {
   }
 
   return (
-    <form ref={formRef} onSubmit={handleOnSubmit}>
+    <form style={formStyles} ref={formRef} onSubmit={handleOnSubmit}>
       <label htmlFor="todo">Todo</label>
       <input id="todo" type="text" />
       <button type="submit">Add</button>

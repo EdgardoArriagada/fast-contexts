@@ -1,6 +1,12 @@
-import React, { useRef, FC } from 'react'
+import React, { useRef, FC, CSSProperties } from 'react'
 
 import { useTodoStore } from '../stores/todoStore'
+
+const inputStyles: CSSProperties = {
+  marginTop: '20rem',
+  display: 'flex',
+  gap: '1rem',
+}
 
 interface Props {}
 
@@ -12,7 +18,7 @@ const TitleSetter: FC<Props> = () => {
   }
 
   return (
-    <div style={{ marginTop: '20rem' }}>
+    <div style={inputStyles}>
       <label htmlFor="todo">Change Title</label>
       <input id="todo" type="text" onChange={handleChange} />
     </div>
