@@ -10,7 +10,7 @@ const inputStyles: CSSProperties = {
 interface Props {}
 
 const TitleSetter: FC<Props> = () => {
-  const [, updateStore] = useTodoStore((store) => store.title)
+  const [, updateStore] = useTodoStore()
 
   const handleChange = (e: any) => {
     updateStore({ title: e.target.value })

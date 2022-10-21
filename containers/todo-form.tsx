@@ -12,7 +12,7 @@ interface Props {}
 const TodoForm: FC<Props> = () => {
   const formRef = useRef<HTMLFormElement>(null)
 
-  const [, updateStore] = useTodoStore((store) => store.current)
+  const [, updateStore] = useTodoStore()
   const handleOnSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const newTodo = { id: Date.now(), text: e.currentTarget.todo.value }
