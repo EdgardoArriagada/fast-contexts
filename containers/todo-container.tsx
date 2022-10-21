@@ -10,12 +10,16 @@ interface Props {}
 const TodoBody: FC<Props> = () => {
   return (
     <>
-      <Title />
+      <div style={{ marginBottom: '1rem' }}>
+        <Title />
+      </div>
       <TodoForm />
       <CurrentTodos />
       <hr />
       <PastTodos />
-      <TitleSetter />
+      <div style={{ marginTop: '20rem' }}>
+        <TitleSetter />
+      </div>
     </>
   )
 }

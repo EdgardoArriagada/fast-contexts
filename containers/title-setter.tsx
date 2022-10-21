@@ -1,9 +1,8 @@
-import React, { useRef, FC, CSSProperties } from 'react'
+import React, { FC, CSSProperties } from 'react'
 
 import { useTodoStore } from '../stores/todoStore'
 
 const inputStyles: CSSProperties = {
-  marginTop: '20rem',
   display: 'flex',
   gap: '1rem',
 }
