@@ -1,11 +1,11 @@
 import {
-  WordProvider,
-  useWordUpdater,
-  useWordState,
+  Provider,
+  useUpdater,
+  useStoredState,
 } from '../../contexts/createSplitContext'
 
 const TextInput = ({ value }: { value: 'first' | 'last' }) => {
-  const updateWord = useWordUpdater()
+  const updateWord = useUpdater()
   return (
     <div className="field">
       {value}: <input onChange={(e) => updateWord(e.target.value)} />
@@ -14,7 +14,7 @@ const TextInput = ({ value }: { value: 'first' | 'last' }) => {
 }
 
 const Display = ({ value }: { value: 'first' | 'last' }) => {
-  const wordState = useWordState()
+  const wordState = useStoredState()
   return (
     <div className="value">
       {value}: {wordState}
@@ -54,12 +54,12 @@ const ContentContainer = () => {
 
 function SplitContext() {
   return (
-    <WordProvider>
+    <Provider>
       <div className="container">
         <h5>App</h5>
         <ContentContainer />
       </div>
-    </WordProvider>
+    </Provider>
   )
 }
 

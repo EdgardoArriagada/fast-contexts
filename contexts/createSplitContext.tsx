@@ -2,7 +2,6 @@ import React, {
   useState,
   createContext,
   useContext,
-  useCallback,
   Dispatch,
   SetStateAction,
   FC,
@@ -10,41 +9,43 @@ import React, {
 
 type StringDispatch = Dispatch<SetStateAction<string>>
 
-const WordStateContext = createContext<string | null>(null)
-const WordUpdaterContext = createContext<StringDispatch | null>(null)
+const StateContext = createContext<string | null>(null)
+const UpdaterContext = createContext<StringDispatch | null>(null)
 
-type WordProviderProps = {
+type ProviderProps = {
   children?: React.ReactNode
 }
 
-const WordProvider: FC<WordProviderProps> = ({ children }) => {
-  const [count, setWord] = useState('')
+const Provider: FC<ProviderProps> = ({ children }) => {
+  const [state, setState] = useState('')
+
   return (
-    <WordStateContext.Provider value={count}>
-      <WordUpdaterContext.Provider value={setWord}>
+    <StateContext.Provider value={state}>
+      <UpdaterContext.Provider value={setState}>
         {children}
-      </WordUpdaterContext.Provider>
-    </WordStateContext.Provider>
+      </UpdaterContext.Provider>
+    </StateContext.Provider>
   )
 }
 
-function useWordState() {
-  const wordState = useContext(WordStateContext)
+function useStoredState() {
+  const state = useContext(StateContext)
 
-  if (typeof wordState === 'undefined') {
-    throw new Error('useWordState must be used within a WordProvider')
+  if (typeof state === 'undefined') {
+    throw new Error('useStoredState must be used within a WordProvider')
   }
 
-  return wordState
+  return state
 }
 
-function useWordUpdater() {
-  const setWord = useContext(WordUpdaterContext)!
-  if (typeof setWord === 'undefined') {
-    throw new Error('useWordUpdater must be used within a WordProvider')
+function useUpdater() {
+  const updater = useContext(UpdaterContext)!
+
+  if (typeof updater === 'undefined') {
+    throw new Error('useUpdater must be used within a WordProvider')
   }
-  const increment = useCallback((val: string) => setWord(val), [setWord])
-  return increment
+
+  return updater
 }
 
-export { WordProvider, useWordState, useWordUpdater }
+export { Provider, useStoredState, useUpdater }
