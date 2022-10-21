@@ -48,9 +48,11 @@ export default function createFastContext<Store>(initialState: Store) {
     )
   }
 
+  type SelectorSetter = (value: Partial<Store>) => void
+
   function useStore<SelectorOutput>(
     selector: (store: Store) => SelectorOutput
-  ): [SelectorOutput, (value: Partial<Store>) => void] {
+  ): [SelectorOutput, SelectorSetter] {
     const store = useContext(StoreContext)
 
     if (!store) {
