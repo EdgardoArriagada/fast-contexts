@@ -37,13 +37,18 @@ function MyApp({ Component, pageProps, router }: AppProps) {
 
       <ul className={s.navigation}>
         <Li
-          path="/observables"
-          text="Observables"
+          path="/normal-context"
+          text="Normal Context"
           currentPath={router.pathname}
         />
         <Li
           path="/split-context"
           text="Split Context"
+          currentPath={router.pathname}
+        />
+        <Li
+          path="/observables"
+          text="Observables"
           currentPath={router.pathname}
         />
       </ul>
