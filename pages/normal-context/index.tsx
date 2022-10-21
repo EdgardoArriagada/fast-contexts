@@ -1,10 +1,11 @@
 import { useStore, NormalProvider } from '../../contexts/createNormalContext'
 
 const TextInput = ({ value }: { value: 'first' | 'last' }) => {
-  const [, updateWord] = useStore()!
+  const [, updateFirst, updateLast] = useStore()!
+  const updateChoosen = value === 'first' ? updateFirst : updateLast
   return (
     <div className="field">
-      {value}: <input onChange={(e) => updateWord(e.target.value)} />
+      {value}: <input onChange={(e) => updateChoosen(e.target.value)} />
     </div>
   )
 }
@@ -13,7 +14,7 @@ const Display = ({ value }: { value: 'first' | 'last' }) => {
   const [wordState] = useStore()!
   return (
     <div className="value">
-      {value}: {wordState}
+      {value}: {wordState[value === 'first' ? 0 : 1]}
     </div>
   )
 }

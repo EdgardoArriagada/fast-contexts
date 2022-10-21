@@ -2,23 +2,33 @@ import React, {
   useState,
   createContext,
   useContext,
-  Dispatch,
-  SetStateAction,
+  useCallback,
   FC,
 } from 'react'
 
-type StringDispatch = Dispatch<SetStateAction<string>>
+type StringDispatch = (value: string) => void
 
-const WordStateContext = createContext<[string, StringDispatch] | null>(null)
+const WordStateContext = createContext<
+  [[string, string], StringDispatch, StringDispatch] | null
+>(null)
 
 type NormalProviderProps = {
   children?: React.ReactNode
 }
 
 const NormalProvider: FC<NormalProviderProps> = ({ children }) => {
-  const [count, setWord] = useState('')
+  const [state, setState] = useState<[string, string]>(['', ''])
+
+  const setFirst = useCallback((value: string) => {
+    setState((prev) => [value, prev[1]])
+  }, [])
+
+  const setLast = useCallback((value: string) => {
+    setState((prev) => [prev[0], value])
+  }, [])
+
   return (
-    <WordStateContext.Provider value={[count, setWord]}>
+    <WordStateContext.Provider value={[state, setFirst, setLast]}>
       {children}
     </WordStateContext.Provider>
   )
