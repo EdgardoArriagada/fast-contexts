@@ -58,8 +58,8 @@ export default function createFastContext<Store>(initialState: Store) {
   type SelectorSetter = (value: Partial<Store>) => void
 
   function useStore<SelectorOutput>(
-    selector?: (store: Store) => SelectorOutput
-  ): [SelectorOutput | undefined, SelectorSetter] {
+    selector: (store: Store) => SelectorOutput
+  ): SelectorOutput {
     const store = useContext(StoreContext)
 
     if (!store) {
@@ -75,11 +75,22 @@ export default function createFastContext<Store>(initialState: Store) {
       return unsubscribe
     }, [store, selector])
 
-    return [state, store.set]
+    return state
+  }
+
+  function useUpdater<SelectorOutput>(): SelectorSetter {
+    const store = useContext(StoreContext)
+
+    if (!store) {
+      throw new Error('Store not found')
+    }
+
+    return store.set
   }
 
   return {
     Provider,
     useStore,
+    useUpdater,
   }
 }

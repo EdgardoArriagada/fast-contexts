@@ -5,7 +5,7 @@ import { useTodoStore } from '../stores/todoStore'
 interface Props {}
 
 const Title: FC<Props> = () => {
-  const [title] = useTodoStore((state) => state.title)
+  const title = useTodoStore((state) => state.title)
 
   return <h1>{title}</h1>
 }

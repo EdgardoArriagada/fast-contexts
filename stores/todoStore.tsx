@@ -13,6 +13,10 @@ interface TodoStore {
 
 const initialState: TodoStore = { current: [], past: [], title: 'Todo List' }
 
-const { Provider, useStore } = createFastContext(initialState)
+const { Provider, useStore, useUpdater } = createFastContext(initialState)
 
-export { Provider as TodoProvider, useStore as useTodoStore }
+export {
+  Provider as TodoProvider,
+  useStore as useTodoStore,
+  useUpdater as useTodoUpdater,
+}

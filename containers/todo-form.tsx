@@ -1,6 +1,6 @@
 import React, { useRef, FC, CSSProperties } from 'react'
 
-import { useTodoStore } from '../stores/todoStore'
+import { useTodoUpdater } from '../stores/todoStore'
 
 const formStyles: CSSProperties = {
   display: 'flex',
@@ -12,7 +12,7 @@ interface Props {}
 const TodoForm: FC<Props> = () => {
   const formRef = useRef<HTMLFormElement>(null)
 
-  const [, updateStore] = useTodoStore()
+  const updateStore = useTodoUpdater()
   const handleOnSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const newTodo = { id: Date.now(), text: e.currentTarget.todo.value }
