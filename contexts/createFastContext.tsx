@@ -8,13 +8,15 @@ import React, {
 } from 'react'
 
 export default function createFastContext<Store>(initialState: Store) {
-  type FunctionSetter = (value: Store) => Partial<Store>
   type UseStoreDataReturnType = ReturnType<typeof useStoreData>
-  type SelectorSetter = (value: Partial<Store>) => void
+
+  type FunctionSetter = (store: Store) => Partial<Store>
+  type SetArg = Partial<Store> | FunctionSetter
+  type SelectorSetter = (value: SetArg) => void
 
   function useStoreData(): {
     get: () => Store
-    set: (value: Partial<Store>) => void
+    set: (arg: SetArg) => void
     subscribe: (callback: () => void) => () => void
   } {
     const store = useRef(initialState)
@@ -23,7 +25,7 @@ export default function createFastContext<Store>(initialState: Store) {
 
     const subscribers = useRef(new Set<() => void>())
 
-    const set = useCallback((arg: FunctionSetter | Partial<Store>) => {
+    const set = useCallback((arg: SetArg) => {
       if (typeof arg === 'function') {
         store.current = { ...store.current, ...arg(store.current) }
       } else {

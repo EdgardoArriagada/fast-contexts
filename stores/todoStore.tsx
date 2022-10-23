@@ -5,15 +5,18 @@ export type Todo = {
   text: string
 }
 
-interface TodoStore {
+export interface TodoStore {
   current: Todo[]
   past: Todo[]
   title: string
 }
 
+export type TodoSetter = (store: TodoStore) => Partial<TodoStore>
+
 const initialState: TodoStore = { current: [], past: [], title: 'Todo List' }
 
-const { Provider, useStore, useUpdater } = createFastContext(initialState)
+const { Provider, useStore, useUpdater } =
+  createFastContext<TodoStore>(initialState)
 
 export {
   Provider as TodoProvider,

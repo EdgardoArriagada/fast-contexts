@@ -1,6 +1,6 @@
 import React, { FC, CSSProperties } from 'react'
 
-import { useTodoStore, useTodoUpdater } from '../stores/todoStore'
+import { TodoSetter, useTodoStore, useTodoUpdater } from '../stores/todoStore'
 
 interface Props {}
 
@@ -26,9 +26,11 @@ const PastTodos: FC<Props> = () => {
       past: newPastTodos,
     })
 
-    todoUpdater((store) => ({
-      current: [...store.current, resurrectedTodo],
-    }))
+    const todoSetter: TodoSetter = (store) => ({
+      current: [...store.current, resurrectedTodo!],
+    })
+
+    todoUpdater(todoSetter)
   }
 
   return (
