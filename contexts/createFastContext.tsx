@@ -57,19 +57,25 @@ export default function createFastContext<Store>(initialState: Store) {
 
   type SelectorSetter = (value: Partial<Store>) => void
 
-  function useStore<SelectorOutput>(
-    selector: (store: Store) => SelectorOutput
-  ): SelectorOutput {
+  function useStoreContext() {
     const store = useContext(StoreContext)
 
     if (!store) {
       throw new Error('Store not found')
     }
 
-    const [state, setState] = useState(() => selector?.(store.get()))
+    return store
+  }
+
+  function useStore<SelectorOutput>(
+    selector: (store: Store) => SelectorOutput
+  ): SelectorOutput {
+    const store = useStoreContext()
+
+    const [state, setState] = useState(() => selector(store.get()))
 
     useEffect(() => {
-      const callback = () => setState(selector?.(store.get()))
+      const callback = () => setState(selector(store.get()))
       const unsubscribe = store.subscribe(callback)
       callback()
       return unsubscribe
@@ -78,12 +84,8 @@ export default function createFastContext<Store>(initialState: Store) {
     return state
   }
 
-  function useUpdater<SelectorOutput>(): SelectorSetter {
-    const store = useContext(StoreContext)
-
-    if (!store) {
-      throw new Error('Store not found')
-    }
+  function useUpdater(): SelectorSetter {
+    const store = useStoreContext()
 
     return store.set
   }
