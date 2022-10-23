@@ -19,8 +19,15 @@ export default function createFastContext<Store>(initialState: Store) {
 
     const subscribers = useRef(new Set<() => void>())
 
-    const set = useCallback((value: Partial<Store>) => {
-      store.current = { ...store.current, ...value }
+    type FunctionSetter = (value: Store) => Partial<Store>
+    type SetArg = FunctionSetter | Partial<Store>
+
+    const set = useCallback((arg: SetArg) => {
+      if (typeof arg === 'function') {
+        store.current = { ...store.current, ...arg(store.current) }
+      } else {
+        store.current = { ...store.current, ...arg }
+      }
       subscribers.current.forEach((callback) => callback())
     }, [])
 
@@ -51,18 +58,18 @@ export default function createFastContext<Store>(initialState: Store) {
   type SelectorSetter = (value: Partial<Store>) => void
 
   function useStore<SelectorOutput>(
-    selector: (store: Store) => SelectorOutput
-  ): [SelectorOutput, SelectorSetter] {
+    selector?: (store: Store) => SelectorOutput
+  ): [SelectorOutput | undefined, SelectorSetter] {
     const store = useContext(StoreContext)
 
     if (!store) {
       throw new Error('Store not found')
     }
 
-    const [state, setState] = useState(() => selector(store.get()))
+    const [state, setState] = useState(() => selector?.(store.get()))
 
     useEffect(() => {
-      const callback = () => setState(selector(store.get()))
+      const callback = () => setState(selector?.(store.get()))
       const unsubscribe = store.subscribe(callback)
       callback()
       return unsubscribe

@@ -51,6 +51,12 @@ function MyApp({ Component, pageProps, router }: AppProps) {
           text="Observables"
           currentPath={router.pathname}
         />
+
+        <Li
+          path="/real-use-case"
+          text="Real Use Case"
+          currentPath={router.pathname}
+        />
       </ul>
       <main className={s.main}>
         <Component {...pageProps} />
