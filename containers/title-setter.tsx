@@ -1,6 +1,6 @@
 import React, { FC, CSSProperties } from 'react'
 
-import { useTodoStore } from '../stores/todoStore'
+import { useTodoUpdater } from '../stores/todoStore'
 
 const inputStyles: CSSProperties = {
   display: 'flex',
@@ -10,7 +10,7 @@ const inputStyles: CSSProperties = {
 interface Props {}
 
 const TitleSetter: FC<Props> = () => {
-  const [, updateStore] = useTodoStore()
+  const updateStore = useTodoUpdater()
 
   const handleChange = (e: any) => {
     updateStore({ title: e.target.value })

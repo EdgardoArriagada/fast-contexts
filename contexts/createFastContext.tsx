@@ -8,9 +8,15 @@ import React, {
 } from 'react'
 
 export default function createFastContext<Store>(initialState: Store) {
+  type UseStoreDataReturnType = ReturnType<typeof useStoreData>
+
+  type FunctionSetter = (store: Store) => Partial<Store>
+  type SetArg = Partial<Store> | FunctionSetter
+  type SelectorSetter = (value: SetArg) => void
+
   function useStoreData(): {
     get: () => Store
-    set: (value: Partial<Store>) => void
+    set: (arg: SetArg) => void
     subscribe: (callback: () => void) => () => void
   } {
     const store = useRef(initialState)
@@ -18,9 +24,6 @@ export default function createFastContext<Store>(initialState: Store) {
     const get = useCallback(() => store.current, [])
 
     const subscribers = useRef(new Set<() => void>())
-
-    type FunctionSetter = (value: Store) => Partial<Store>
-    type SetArg = FunctionSetter | Partial<Store>
 
     const set = useCallback((arg: SetArg) => {
       if (typeof arg === 'function') {
@@ -43,8 +46,6 @@ export default function createFastContext<Store>(initialState: Store) {
     }
   }
 
-  type UseStoreDataReturnType = ReturnType<typeof useStoreData>
-
   const StoreContext = createContext<UseStoreDataReturnType | null>(null)
 
   function Provider({ children }: { children: React.ReactNode }) {
@@ -55,31 +56,42 @@ export default function createFastContext<Store>(initialState: Store) {
     )
   }
 
-  type SelectorSetter = (value: Partial<Store>) => void
-
-  function useStore<SelectorOutput>(
-    selector?: (store: Store) => SelectorOutput
-  ): [SelectorOutput | undefined, SelectorSetter] {
+  function useStoreContext() {
     const store = useContext(StoreContext)
 
     if (!store) {
       throw new Error('Store not found')
     }
 
-    const [state, setState] = useState(() => selector?.(store.get()))
+    return store
+  }
+
+  function useStore<SelectorOutput>(
+    selector: (store: Store) => SelectorOutput
+  ): SelectorOutput {
+    const store = useStoreContext()
+
+    const [state, setState] = useState(() => selector(store.get()))
 
     useEffect(() => {
-      const callback = () => setState(selector?.(store.get()))
+      const callback = () => setState(selector(store.get()))
       const unsubscribe = store.subscribe(callback)
       callback()
       return unsubscribe
     }, [store, selector])
 
-    return [state, store.set]
+    return state
+  }
+
+  function useUpdater(): SelectorSetter {
+    const store = useStoreContext()
+
+    return store.set
   }
 
   return {
     Provider,
     useStore,
+    useUpdater,
   }
 }

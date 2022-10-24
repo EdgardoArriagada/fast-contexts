@@ -1,6 +1,6 @@
 import React, { FC, CSSProperties } from 'react'
 
-import { useTodoStore } from '../stores/todoStore'
+import { useTodoStore, useTodoUpdater, TodoSetter } from '../stores/todoStore'
 
 interface Props {}
 
@@ -15,19 +15,20 @@ const elementStyles: CSSProperties = {
 }
 
 const CurrentTodos: FC<Props> = () => {
-  const [currentTodos, updateStore] = useTodoStore(
-    (todoStore) => todoStore.current
-  )
+  const currentTodos = useTodoStore((todoStore) => todoStore.current)
+  const todoUpdater = useTodoUpdater()
 
   const handleCheckboxClick = (id: number) => {
     const newCurrentTodos = currentTodos.filter((todo) => todo.id !== id)
     const newPastTodos = currentTodos.find((todo) => todo.id === id)
 
-    updateStore({ current: newCurrentTodos })
+    todoUpdater({ current: newCurrentTodos })
 
-    updateStore((store) => ({
-      past: [...store.past, newPastTodos],
-    }))
+    const todoSetter: TodoSetter = (store) => ({
+      past: [...store.past, newPastTodos!],
+    })
+
+    todoUpdater(todoSetter)
   }
 
   return (
